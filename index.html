@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product render and create</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+
+  <body class="bg-gray-100">
+    <!-- HEADER -->
+    <header class="bg-white shadow-sm p-4">
+      <div class="max-w-6xl mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-gray-700">📦 Product Dashboard</h1>
+
+        <button
+          data-modal-target="crud-modal"
+          data-modal-toggle="crud-modal"
+          class="flex items-center gap-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm"
+        >
+          Add Product
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-6xl mx-auto mt-6 p-4 bg-white shadow rounded-lg">
+      <h2 class="text-xl font-semibold mb-4 text-gray-700">Product List</h2>
+
+      <div class="relative overflow-x-auto rounded-lg shadow-sm">
+        <div class="flex justify-between mb-4">
+          <!-- SEARCH INPUT -->
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Search product..."
+            class="px-4 py-2 border rounded-lg w-64 focus:ring-blue-500 focus:border-blue-500"
+            onkeyup="handleSearch()"
+          />
+
+          <!-- FILTER DROPDOWN -->
+          <select
+            id="filterSelect"
+            class="px-3 py-2 border rounded-lg bg-white w-48"
+            onchange="handleFilter()"
+          >
+            <option value="all">All Categories</option>
+            <option value="Laptop">Laptop</option>
+            <option value="Phones">Phones</option>
+            <option value="Accessories">Accessories</option>
+          </select>
+        </div>
+
+        <table class="w-full text-sm text-left text-gray-500">
+          <thead class="text-xs uppercase bg-gray-100 text-gray-700">
+            <tr>
+              <th class="px-6 py-3">ID</th>
+              <th class="px-6 py-3">Product Name</th>
+              <th class="px-6 py-3">Color</th>
+              <th class="px-6 py-3">Category</th>
+              <th class="px-6 py-3">Price</th>
+              <th class="px-6 py-3 text-center">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody id="productTableBody" class="bg-white divide-y">
+            <!-- <tr>
+              <td class="px-6 py-4">1</td>
+              <td class="px-6 py-4 font-medium text-gray-900">Product 1</td>
+              <td class="px-6 py-4">Blue</td>
+              <td class="px-6 py-4">Laptop</td>
+              <td class="px-6 py-4">$20</td>
+              <td class="px-6 py-4 text-center">
+                <button onclick="" class="text-blue-600 hover:underline">
+                  Edit
+                </button>
+                <button onclick="" class="text-red-600 hover:underline">
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4">2</td>
+              <td class="px-6 py-4 font-medium text-gray-900">Product 1</td>
+              <td class="px-6 py-4">Blue</td>
+              <td class="px-6 py-4">Laptop</td>
+              <td class="px-6 py-4">$20</td>
+              <td class="px-6 py-4 text-center">
+                <button onclick="" class="text-blue-600 hover:underline">
+                  Edit
+                </button>
+                <button onclick="" class="text-red-600 hover:underline">
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4">3</td>
+              <td class="px-6 py-4 font-medium text-gray-900">Product 1</td>
+              <td class="px-6 py-4">Blue</td>
+              <td class="px-6 py-4">Laptop</td>
+              <td class="px-6 py-4">$20</td>
+              <td class="px-6 py-4 text-center">
+                <button onclick="" class="text-blue-600 hover:underline">
+                  Edit
+                </button>
+                <button onclick="" class="text-red-600 hover:underline">
+                  Delete
+                </button>
+              </td>
+            </tr> -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <!-- MODAL adding product-->
+    <div
+      id="crud-modal"
+      tabindex="-1"
+      aria-hidden="true"
+      class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm"
+    >
+      <div class="w-full max-w-md p-4">
+        <div class="relative bg-white rounded-lg shadow">
+          <!-- Modal header -->
+          <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-lg font-semibold text-gray-700">
+              Create New Product
+            </h3>
+            <button
+              data-modal-toggle="crud-modal"
+              class="text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded-lg p-2"
+            >
+              ✖
+            </button>
+          </div>
+
+          <!-- Modal body -->
+          <form id="productForm" class="p-4">
+            <div class="grid gap-4 grid-cols-2">
+              <div>
+                <label class="text-sm font-medium">Product Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  class="w-full p-2 border rounded-lg mt-1"
+                  placeholder="Type product name"
+                />
+              </div>
+
+              <div>
+                <label class="text-sm font-medium">Price</label>
+                <input
+                  type="number"
+                  id="price"
+                  class="w-full p-2 border rounded-lg mt-1"
+                  placeholder="2999"
+                />
+              </div>
+
+              <div>
+                <label class="text-sm font-medium">Category</label>
+                <select id="category" class="w-full p-2 border rounded-lg mt-1">
+                  <option>Select category</option>
+                  <option value="Laptop">Laptop</option>
+                  <option value="Phones">Phones</option>
+                  <option value="Accessories">Accessories</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-sm font-medium">Color</label>
+                <select id="color" class="w-full p-2 border rounded-lg mt-1">
+                  <option>Select color</option>
+                  <option value="Red">Red</option>
+                  <option value="Black">Black</option>
+                  <option value="Green">Green</option>
+                  <option value="White">White</option>
+                </select>
+              </div>
+
+              <div class="col-span-2">
+                <label class="text-sm font-medium">Description</label>
+                <textarea
+                  id="description"
+                  rows="3"
+                  class="w-full p-2 border rounded-lg mt-1"
+                ></textarea>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="w-full mt-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg"
+              onclick="createProduct()"
+            >
+              Add Product
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+  </body>
+  <script>
+    let tbody = document.getElementById("productTableBody");
+
+    let name = document.getElementById("name");
+    let price = document.getElementById("price");
+    let category = document.getElementById("category");
+    let colors = document.getElementById("color");
+    let description = document.getElementById("description");
+
+    //Variable Array objact
+    let products = [
+      {
+        id: 1,
+        name: "Sophal",
+        color: "Red",
+        category: "laptop",
+        price: 20,
+      },
+    ];
+
+    // Getting Data user input
+    const createProduct = () => {
+      if (!name.value || !price.value || !category.value || !colors.value) {
+        alert("Please fill out all these field.");
+        return;
+      }
+      //variable objact
+      let newProduct = {
+        id: products.length + 1,
+        name: name.value,
+        price: price.value,
+        category: category.value,
+        color: colors.value,
+        discrip: description.value,
+      };
+      //push method in javascript
+      products.push(newProduct); //push new data user input
+      renderProduct(); //creating and showing new input in product listing
+      document.querySelector("form").reset();
+    };
+
+    //render Product Listing in table
+    const renderProduct = () => {
+      tbody.innerHTML = ""; // it is mean, don't need it render old product listing
+      products.forEach((product) => {
+        const tr = document.createElement("tr");
+        //JS String Tamplete
+
+        tr.innerHTML = `
+            <td class="px-6 py-4">${product.id}</td>
+            <td class="px-6 py-4 font-medium text-gray-900">${product.name}</td>
+            <td class="px-6 py-4">${product.color}</td>
+            <td class="px-6 py-4">${product.category}</td>
+            <td class="px-6 py-4">$${product.price}</td>
+            <td class="px-6 py-4 text-center">
+            <button onclick="" class="text-blue-600 hover:underline px-2">
+                Edit
+            </button>
+            <button onclick="" class="text-red-600 hover:underline ">
+                Delete
+            </button>
+            </td>
+            `;
+        tbody.append(tr);
+      });
+    };
+
+    renderProduct(); // Auto running Arrow function
+  </script>
+</html>
