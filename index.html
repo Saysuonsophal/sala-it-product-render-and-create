@@ -48,6 +48,15 @@
             class="px-4 py-2 border rounded-lg w-64 focus:ring-blue-500 focus:border-blue-500"
             onkeyup="handleSearch()"
           />
+          <!-- Local Data Storage -->
+           <button
+          type="button"
+          data-modal-toggle="crud-modal"
+          class="flex items-center gap-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm"
+        >
+          Clear Local Data
+        </button>
+
 
           <!-- FILTER DROPDOWN -->
           <select
@@ -299,7 +308,6 @@
       renderProduct(selectfiltered);
       
     }
-
 
 
     //Delete Product
