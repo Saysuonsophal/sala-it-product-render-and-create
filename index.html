@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Product render and create</title>
+    <title>Product render, create, update, and delete</title>
 
     <link
       href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
@@ -20,7 +20,7 @@
         <h1 class="text-2xl font-bold text-gray-700">📦 Product Dashboard</h1>
 
         <button
-          data-modal-target="crud-modal"
+          onclick="openModal()"
           data-modal-toggle="crud-modal"
           class="flex items-center gap-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm"
         >
@@ -39,7 +39,7 @@
           <input
             id="searchInput"
             type="text"
-            placeholder="Search product..."
+            placeholder="Search product name..."
             class="px-4 py-2 border rounded-lg w-64 focus:ring-blue-500 focus:border-blue-500"
             onkeyup="handleSearch()"
           />
@@ -125,17 +125,17 @@
       id="crud-modal"
       tabindex="-1"
       aria-hidden="true"
-      class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm"
+      class="hidden fixed inset-0 z-50 flex items-center justify-center bg-opacity-40 backdrop-blur-sm"
     >
       <div class="w-full max-w-md p-4">
         <div class="relative bg-white rounded-lg shadow">
           <!-- Modal header -->
           <div class="flex justify-between items-center p-4 border-b">
-            <h3 class="text-lg font-semibold text-gray-700">
+            <h3 id="heading" class="text-lg font-semibold text-gray-700">
               Create New Product
             </h3>
             <button
-              data-modal-toggle="crud-modal"
+              onclick="closeModal()"
               class="text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded-lg p-2"
             >
               ✖
@@ -145,6 +145,16 @@
           <!-- Modal body -->
           <form id="productForm" class="p-4">
             <div class="grid gap-4 grid-cols-2">
+              <div class="col-span-2">
+                
+                <label for="product-id" class="hidden text-sm font-medium">Product ID</label>
+                <input
+                  id="productID"
+                  type="text"
+                  class="hidden w-full p-2 border rounded-lg mt-1"
+                  readonly
+                ></input>
+              </div>
               <div>
                 <label class="text-sm font-medium">Product Name</label>
                 <input
@@ -197,10 +207,19 @@
 
             <button
               type="button"
+              id="createBtn"
               class="w-full mt-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg"
               onclick="createProduct()"
             >
               Add Product
+            </button>
+            <button
+              type="button"
+              id="updateBtn"
+              class="hidden w-full mt-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg"
+              onclick="updateProduct()"
+            >
+              Update Product
             </button>
           </form>
         </div>
@@ -211,12 +230,18 @@
   </body>
   <script>
     let tbody = document.getElementById("productTableBody");
-
     let name = document.getElementById("name");
     let price = document.getElementById("price");
     let category = document.getElementById("category");
     let colors = document.getElementById("color");
     let description = document.getElementById("description");
+    let createButton=document.getElementById("createBtn");
+    let updateButton=document.getElementById("updateBtn");
+    let productform=document.querySelector("form");
+
+    //filter element
+    let searchInput=document.getElementById("searchInput");
+    let filterSelect=document.getElementById("filterSelect");
 
     //Variable Array objact
     let products = [
@@ -224,10 +249,107 @@
       //   id: 1,
       //   name: "Sophal",
       //   color: "Red",
-      //   category: "laptop",
+      //   category: "Laptop",
       //   price: 20,
       // },
     ];
+
+    let productIndex;
+
+    // Open Modal
+    function openModal() {
+      document.getElementById("crud-modal").classList.remove("hidden");
+    }
+    // Close Modal
+    function closeModal() {
+      document.getElementById("crud-modal").classList.add("hidden");
+    }
+    //Showing field Product ID
+    function showProductID(){
+      document.querySelector('label[for="product-id"]').classList.remove("hidden");
+      document.getElementById('productID').classList.remove("hidden");
+
+    }
+    //Hide field Product ID
+    function hideProductID(){
+      document.querySelector('label[for="product-id"]').classList.add("hidden");
+      document.getElementById('productID').classList.add("hidden");
+
+    }
+    
+    //Search Product
+    function handleSearch() {
+      const userSearch = searchInput.value.toLowerCase();
+      const searchfiltered = products.filter(product => product.name.toLowerCase().includes(userSearch));
+      renderProduct(searchfiltered);
+      
+    }
+    //Filter Product
+    function handleFilter(){
+      const selectCategory = filterSelect.value;
+      const selectfiltered = products.filter((product)=>product.category === selectCategory);
+      // if(selectCategory != "all"){
+
+      // }
+      renderProduct(selectfiltered);
+      
+    }
+
+
+
+    //Delete Product
+    const deleteProduct=(index)=>{
+      products.splice(index,1)
+      console.table(products);
+      renderProduct();
+    }
+    
+    //Update Product
+    const updateProduct=()=>{
+      let productUpdate = {
+        id: products[productIndex].id,
+        name: name.value,
+        price: price.value,
+        category: category.value,
+        color: colors.value,
+        discrip: description.value,
+      };
+      products[productIndex]=productUpdate;
+      renderProduct();
+      closeModal();
+      productform.reset();
+
+      hideProductID();
+      document.getElementById("heading").innerText="Create New Product";
+      createButton.style.display="block";
+      updateButton.style.display="none";
+      console.log("Product:", productUpdate);
+
+    }
+
+    //Edit Product
+    const editProduct = (index) => {
+      let product = products[index];
+
+      showProductID()
+      document.getElementById("productID").value=product.id;
+
+      name.value = product.name;
+      price.value=product.price;
+      category.value=product.category;
+      colors.value=product.color;
+      description.value=product.discrip;
+      
+      productIndex=index;
+
+      document.getElementById("heading").innerText="Edit Product";
+      createButton.style.display="none";
+      updateButton.style.display="block";
+
+      openModal()
+      console.log(productIndex)
+
+    };
 
     // Getting Data user input
     const createProduct = () => {
@@ -245,18 +367,26 @@
         discrip: description.value,
       };
       //push method in javascript
-      products.push(newProduct); //push new data user input
+      products.push(newProduct); //push new data user input from  newProduct(variable object) to products(array object)
       renderProduct(); //creating and showing new input in product listing
-      document.querySelector("form").reset();
+      productform.reset();
+      closeModal();
+      console.log("create product:", newProduct.discrip)
     };
 
-    //render Product Listing in table
-    const renderProduct = () => {
+    //render Product Listing in table UI
+    const renderProduct = (productsList = products) => {
       tbody.innerHTML = ""; // it is mean, don't need it render old product listing
-      products.forEach((product) => {
+
+      if (productsList.length === 0) {
+    tbody.innerHTML =
+      '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">No products found</td></tr>';
+    return;
+  }
+
+      productsList.forEach((product, index) => {
         const tr = document.createElement("tr");
         //JS String Tamplete
-
         tr.innerHTML = `
             <td class="px-6 py-4">${product.id}</td>
             <td class="px-6 py-4 font-medium text-gray-900">${product.name}</td>
@@ -264,10 +394,10 @@
             <td class="px-6 py-4">${product.category}</td>
             <td class="px-6 py-4">$${product.price}</td>
             <td class="px-6 py-4 text-center">
-            <button onclick="" class="text-blue-600 hover:underline px-2">
+            <button onclick="editProduct(${index})" class="text-blue-600 hover:underline px-2">
                 Edit
             </button>
-            <button onclick="" class="text-red-600 hover:underline ">
+            <button onclick="deleteProduct(${index})" class="text-red-600 hover:underline ">
                 Delete
             </button>
             </td>
