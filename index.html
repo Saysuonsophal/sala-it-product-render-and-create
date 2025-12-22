@@ -52,9 +52,10 @@
            <button
           type="button"
           data-modal-toggle="crud-modal"
+          onclick="removeLocalStorage()"
           class="flex items-center gap-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm"
         >
-          Clear Local Data
+          Clear Local Storage
         </button>
 
 
@@ -270,6 +271,7 @@
 
     let productIndex;
 
+    
     // Open Modal
     function openModal() {
       document.getElementById("crud-modal").classList.remove("hidden");
@@ -291,6 +293,35 @@
 
     }
     
+
+    //Auto Load/read data from local storage after run HTML
+    document.addEventListener("DOMContentLoaded", function () {
+      console.log("First load");
+      getFromlocal();
+      renderProduct();
+    })
+
+    //save data to local storage in browser
+    function saveToStorage(){
+      localStorage.setItem("products", JSON.stringify(products));
+      
+    }
+
+    //get data from local storage
+    function getFromlocal(){
+      let data=localStorage.getItem("products");
+      if(data){
+        products = JSON.parse(data)
+      }
+    }
+
+    //remove data from local storage
+    function removeLocalStorage(){
+      localStorage.removeItem("products");//only remove data in local storage 
+      products=[];//remove variable array object
+      renderProduct();//render UI again
+    }
+
     //Search Product
     function handleSearch() {
       const userSearch = searchInput.value.toLowerCase();
@@ -305,16 +336,22 @@
       if(selectCategory !== "all"){
         selectfiltered = products.filter((product) => product.category === selectCategory);
       }
-      renderProduct(selectfiltered);
-      
+      renderProduct(selectfiltered);  
     }
 
 
     //Delete Product
-    const deleteProduct=(index)=>{
-      products.splice(index,1)
-      console.table(products);
-      renderProduct();
+    const deleteProduct = (index)=>{
+      if(confirm('Are you sure you want to delete this item?')){
+        products.splice(index,1)
+        console.table(products);
+        saveToStorage();
+        renderProduct();
+      } else{
+        return;
+      }
+
+      
     }
     
     //Update Product
@@ -328,6 +365,7 @@
         discrip: description.value,
       };
       products[productIndex]=productUpdate;
+      saveToStorage();
       renderProduct();
       closeModal();
       productform.reset();
@@ -381,6 +419,7 @@
       };
       //push method in javascript
       products.push(newProduct); //push new data user input from  newProduct(variable object) to products(array object)
+      saveToStorage();
       renderProduct(); //creating and showing new input in product listing
       productform.reset();
       closeModal();
@@ -392,10 +431,10 @@
       tbody.innerHTML = ""; // it is mean, don't need it render old product listing
 
       if (productsList.length === 0) {
-    tbody.innerHTML =
-      '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">No products found</td></tr>';
-    return;
-  }
+        tbody.innerHTML =
+          '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">No products found</td></tr>';
+        return;
+      }
 
       productsList.forEach((product, index) => {
         const tr = document.createElement("tr");
