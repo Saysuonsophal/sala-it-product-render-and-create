@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Product render, create, update, and delete</title>
+    <title>Product render, create, update, delete, Search and Short filter</title>
+    <!-- These are file include homework 25, 26, 27 and 28 -->
 
     <link
       href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
@@ -404,10 +405,11 @@
 
     // Getting Data user input
     const createProduct = () => {
-      if (!name.value || !price.value || !category.value || !colors.value) {
-        alert("Please fill out all these field.");
-        return;
-      }
+      if (!name.value || !price.value || !color.value || !category.value ) {
+      alert("Please fill out all fields.");
+      return;
+    }
+      
       //variable objact
       let newProduct = {
         id: products.length + 1,
