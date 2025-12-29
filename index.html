@@ -34,6 +34,22 @@
         </button>
       </div>
     </header>
+    <div class="max-w-6xl mx-auto flex justify-between px-3 items-center my-5 border-e-red-500">
+      <h1 class="text-2xl font-bold text-gray-700">Welcome <span id="displayName"></span></h1>
+      <!-- <div class="bg-red-400 max-w-6xl">
+        <h1 class="text-lg font-medium text-gray-700">Session Expired in </h1>
+
+      </div> -->
+      
+      <button
+          type="button"
+          
+          onclick="logout()"
+          class="flex items-center gap-2 px-4 py-2 bg-blue-700 hover:bg-red-500 text-white rounded-lg text-sm"
+        >
+          Sign Out
+        </button>
+    </div>
 
     <!-- MAIN CONTENT -->
     <main class="max-w-6xl mx-auto mt-6 p-4 bg-white shadow rounded-lg">
@@ -54,7 +70,8 @@
           type="button"
           data-modal-toggle="crud-modal"
           onclick="removeLocalStorage()"
-          class="flex items-center gap-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm"
+          disabled
+          class="cursor-not-allowed flex items-center gap-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm"
         >
           Clear Local Storage
         </button>
@@ -254,6 +271,7 @@
     let createButton=document.getElementById("createBtn");
     let updateButton=document.getElementById("updateBtn");
     let productform=document.querySelector("form");
+    let displayName=document.getElementById("displayName");
 
     //filter element
     let searchInput=document.getElementById("searchInput");
@@ -294,26 +312,82 @@
 
     }
     
+    //Sign Out
+    function logout() {
+      window.location.href="login.html";
+      
+    }
+
+    //Session Expire time counter
+
 
     //Auto Load/read data from local storage after run HTML
     document.addEventListener("DOMContentLoaded", function () {
       console.log("First load");
       getFromlocal();
       renderProduct();
+
+      const cookieName = getCookie('name') // ('name') is getting from set/create cookie in variable systemAccount.name of login.html file 
+      
+      //This's condition when cookie expired (remove cookie data), it is redirect to login page
+      if(cookieName === ""){
+        window.location.href="login.html";
+      }
+      displayName.innerText = cookieName;
+      
+
     })
 
     //save data to local storage in browser
     function saveToStorage(){
-      localStorage.setItem("products", JSON.stringify(products));
-      
+      //set local storage
+      // localStorage.setItem("products", JSON.stringify(products));
+
+      //set Cookie storage
+      document.cookie=`products=${JSON.stringify(products)}`
+
     }
 
-    //get data from local storage
-    function getFromlocal(){
-      let data=localStorage.getItem("products");
-      if(data){
-        products = JSON.parse(data)
+    //Function get data from Cookie sotrage
+    function getCookie(cname) {
+      let name = cname + "=";
+      let decodedCookie = decodeURIComponent(document.cookie);
+      let ca = decodedCookie.split(';');
+      for(let i = 0; i <ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
       }
+      return "";
+    }
+
+    
+
+    //get data from Local and Cookie storage
+    function getFromlocal(){
+      //read data local storage
+      // let data=localStorage.getItem("products");
+
+      //convert data string to object
+      // if(data){
+      //   products = JSON.parse(data)
+      // }
+
+      //read data Cookie storage
+      let productCookie=getCookie('products');
+      console.log("Befor cookie:", productCookie);
+      //console.log("Cookie:",typeof productCookie); //result: string
+      
+      if(productCookie){
+        products = JSON.parse(productCookie)
+      }
+      console.log("after cookie:", products)
+      //console.log("Cookie:",typeof products); //result: Object
+
     }
 
     //remove data from local storage
@@ -337,8 +411,10 @@
       if(selectCategory !== "all"){
         selectfiltered = products.filter((product) => product.category === selectCategory);
       }
-      renderProduct(selectfiltered);  
+      renderProduct(selectfiltered);
     }
+    //Filter short Price ASC and DES
+    //Filer short Name ASC and DES
 
 
     //Delete Product
@@ -375,7 +451,7 @@
       document.getElementById("heading").innerText="Create New Product";
       createButton.style.display="block";
       updateButton.style.display="none";
-      console.log("Product:", productUpdate);
+      console.log("Product Update:", productUpdate);
 
     }
 

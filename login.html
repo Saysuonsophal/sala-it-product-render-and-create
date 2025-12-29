@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Session</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <!-- animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div
+      class="overflow-y-auto overflow-x-hidden flex z-50 justify-center items-center w-full h-screen"
+    >
+      <div class="relative p-4 w-full max-w-md max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+          <!-- Modal header -->
+          <div
+            class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200"
+          >
+            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">
+              Sign in
+            </h3>
+            <button
+              type="button"
+              class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              data-modal-hide="authentication-modal"
+            >
+              <svg
+                class="w-3 h-3"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 14"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                />
+              </svg>
+              <span class="sr-only">Close modal</span>
+            </button>
+          </div>
+          <!-- Modal body -->
+          <div class="p-4 md:p-5">
+            <form class="space-y-4" action="#">
+              <div class="flex justify-center flex-col items-center">
+                <span
+                  class="block mb-2 font-semibold text-xl text-red-500 dark:text-white"
+                  >Demo Account Sala IT
+                </span>
+                <span
+                  class="gap-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  <strong>Username:</strong> Admin
+                  <strong>/</strong>
+                  <strong>Password:</strong> admin1234
+                </span>
+              </div>
+              <div id="errorMessage">
+                <!-- <span
+                  class="block bg-red-600 p-2 text-sm capitalize font-medium text-gray-900 dark:text-white"
+                  >invalid Username and password</span
+                > -->
+              </div>
+              <div>
+                <label
+                  for=""
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Your Username</label
+                >
+                <input
+                  type="text"
+                  name="email"
+                  id="txtUsername"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  placeholder="Username"
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  for="password"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Your password</label
+                >
+                <input
+                  type="password"
+                  name="password"
+                  id="txtpassword"
+                  placeholder="••••••••"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  required
+                />
+              </div>
+              <div class="flex justify-between">
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <input
+                      id="remember"
+                      type="checkbox"
+                      value=""
+                      class="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
+                    />
+                  </div>
+                  <label
+                    for="remember"
+                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >Remember me</label
+                  >
+                </div>
+                <a
+                  href="#"
+                  class="text-sm text-blue-700 hover:underline dark:text-blue-500"
+                  >Lost Password?</a
+                >
+              </div>
+              <button
+                type="button"
+                class="w-full text-white cursor-pointer bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                onclick="login()"
+              >
+                Sign In to your account
+              </button>
+              <div class="separator mb-3 text-center">
+                <span class="top-0 left-0 before:bg-red-500"></span>
+                <span class="bg-emerald-300 px-2 text-white">Or </span>
+
+                <!-- Login with social media -->
+
+                <div class="flex justify-center items-center my-5">
+                  <div class="flex justify-center sm:mt-0 overflow-hidden">
+                    <a
+                      href="#"
+                      class="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+                    >
+                      <i class="fa-brands fa-facebook text-2xl"></i>
+                    </a>
+                    <a
+                      href="#"
+                      class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5"
+                    >
+                      <i class="fa-brands fa-discord text-2xl"></i>
+                    </a>
+                    <a
+                      href="#"
+                      class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5"
+                    >
+                      <i class="fa-brands fa-github text-2xl"></i>
+                    </a>
+                    <a
+                      href="#"
+                      class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5"
+                    >
+                      <i class="fa-brands fa-google text-2xl"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="text-md font-medium text-gray-500 dark:text-gray-300 flex flex-col items-center"
+              >
+                Dont have an account?
+                <a
+                  href="#"
+                  class="text-blue-700 hover:underline dark:text-blue-500"
+                  >Register Now</a
+                >
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    let txtUsername = document.getElementById("txtUsername");
+    let txtpassword = document.getElementById("txtpassword");
+    let errorMessage = document.getElementById("errorMessage");
+
+    const systemAccount = {
+      name: "Sala IT",
+      username: "Admin",
+      password: "admin1234",
+    };
+
+    //Function Settime cookie Expired
+    function setCookie(key, value, time, unit) {
+      let date = new Date();
+      console.log("Date", date);
+      let TimeInMs = 0;
+
+      if (unit === "m") {
+        TimeInMs = time * 60 * 1000; //minutes
+      } else if (unit === "h") {
+        TimeInMs = time * 60 * 60 * 1000; //hours
+      } else if (unit === "d") {
+        TimeInMs = time * 24 * 60 * 60 * 1000; //day
+      }
+
+      date.setTime(date.getTime() + TimeInMs);
+
+      //Expired Cookie storage
+      document.cookie = `${key}=${value}; expires=${date.toUTCString()}; path=/`;
+    }
+
+    function login() {
+      const username = txtUsername.value;
+      const password = txtpassword.value;
+
+      if (
+        username.trim() === systemAccount.username &&
+        password.trim() === systemAccount.password
+      ) {
+        alert("Login successful");
+
+        //Creat/Set data to Cookie sotrage
+        // document.cookie = `name=${systemAccount.name}`;
+        // document.cookie = `username=${systemAccount.username}`;
+
+        //Creat/Set data and expire time(remove data) to Cookie sotrage
+        setCookie("name", systemAccount.name, 1, "m");
+        setCookie("username", systemAccount.username, 1, "m");
+
+        window.location.href = "index.html";
+      } else {
+        errorMessage.innerHTML =
+          '<span class="block bg-red-600 p-2 text-sm capitalize font-medium text-gray-900 dark:text-white">invalid Username and password</span>';
+        document.querySelector("form").reset();
+      }
+    }
+  </script>
+</html>
