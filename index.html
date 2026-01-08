@@ -6,6 +6,7 @@
     <title>Product render, create, update, delete, Search and Short filter</title>
     <!-- These are file include homework 25, 26, 27 and 28 -->
 
+    <!-- flowbite css cdn -->
     <link
       href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
       rel="stylesheet"
@@ -330,9 +331,10 @@
       const cookieName = getCookie('name') // ('name') is getting from set/create cookie in variable systemAccount.name of login.html file 
       
       //This's condition when cookie expired (remove cookie data), it is redirect to login page
-      if(cookieName === ""){
-        window.location.href="login.html";
-      }
+      
+      // if(cookieName === ""){
+      //   window.location.href="login.html";
+      // }
       displayName.innerText = cookieName;
       
 
