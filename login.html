@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -96,14 +96,22 @@
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Your password</label
                 >
-                <input
-                  type="password"
-                  name="password"
-                  id="txtpassword"
-                  placeholder="••••••••"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                  required
-                />
+                <div class="relative overflow-hidden">
+                  <input
+                    type="password"
+                    name="password"
+                    id="txtpassword"
+                    placeholder="••••••••"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 pl-2.5 pr-10 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                    required
+                  />
+                  <span
+                    id="showPass"
+                    onclick="togglePassword()"
+                    class="absolute inset-y-0 p-2 end-0 outline-none flex items-center cursor-pointer"
+                    >👁️
+                  </span>
+                </div>
               </div>
               <div class="flex justify-between">
                 <div class="flex items-start">
@@ -112,7 +120,7 @@
                       id="remember"
                       type="checkbox"
                       value=""
-                      class="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
+                      class="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 dark:bg-gray-600 dark:border-gray-500 dark:ring-offset-gray-800"
                     />
                   </div>
                   <label
@@ -132,11 +140,18 @@
                 class="w-full text-white cursor-pointer bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 onclick="login()"
               >
-                Sign In to your account
+                Sign In
               </button>
               <div class="separator mb-3 text-center">
                 <span class="top-0 left-0 before:bg-red-500"></span>
-                <span class="bg-emerald-300 px-2 text-white">Or </span>
+                <div
+                  class="relative h-[1px] bg-gray-400 mt-4 mb-7 flex justify-center items-center"
+                >
+                  <span
+                    class="absolute top-[-10px] bg-gray-700 px-2 py-0 text-sm text-white"
+                    >Or
+                  </span>
+                </div>
 
                 <!-- Login with social media -->
 
@@ -189,17 +204,29 @@
     let txtUsername = document.getElementById("txtUsername");
     let txtpassword = document.getElementById("txtpassword");
     let errorMessage = document.getElementById("errorMessage");
+    let showPass = document.getElementById("showPass");
 
+    let expiredDate = null;
     const systemAccount = {
       name: "Sala IT",
       username: "Admin",
       password: "admin1234",
     };
 
+    function togglePassword() {
+      if (txtpassword.type === "password") {
+        txtpassword.type = "text"; // Shows the password
+        showPass.textContent = "🙈";
+      } else {
+        txtpassword.type = "password"; // hide the password
+        showPass.textContent = "👁️";
+      }
+    }
+
     //Function Settime cookie Expired
     function setCookie(key, value, time, unit) {
       let date = new Date();
-      console.log("Date", date);
+      console.log("Curren Date:", date);
       let TimeInMs = 0;
 
       if (unit === "m") {
@@ -214,6 +241,7 @@
 
       //Expired Cookie storage
       document.cookie = `${key}=${value}; expires=${date.toUTCString()}; path=/`;
+      console.log(`Real Expired time: ${date.toUTCString()}`);
     }
 
     function login() {
@@ -234,11 +262,12 @@
         setCookie("name", systemAccount.name, 1, "m");
         setCookie("username", systemAccount.username, 1, "m");
 
-        window.location.href = "index.html";
+        window.location.href = "index.html"; //direct to dashboard
+        document.querySelector("form").reset();
       } else {
         errorMessage.innerHTML =
           '<span class="block bg-red-600 p-2 text-sm capitalize font-medium text-gray-900 dark:text-white">invalid Username and password</span>';
-        document.querySelector("form").reset();
+        return;
       }
     }
   </script>

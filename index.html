@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product render, create, update, delete, Search and Short filter</title>
     <!-- These are file include homework 25, 26, 27 and 28 -->
+    <!-- Homework 29 & 30 Cookie storage and Expired time -->
 
     <link
       href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
@@ -329,6 +330,9 @@
 
       const cookieName = getCookie('name') // ('name') is getting from set/create cookie in variable systemAccount.name of login.html file 
       
+      
+
+
       //This's condition when cookie expired (remove cookie data), it is redirect to login page
       if(cookieName === ""){
         window.location.href="login.html";
@@ -336,14 +340,17 @@
       displayName.innerText = cookieName;
       
 
-    })
+      
+      
 
+    })
+    
     //save data to local storage in browser
     function saveToStorage(){
       //set local storage
       // localStorage.setItem("products", JSON.stringify(products));
 
-      //set Cookie storage
+      //set Cookie storage(products is global variable)
       document.cookie=`products=${JSON.stringify(products)}`
 
     }
@@ -426,9 +433,7 @@
         renderProduct();
       } else{
         return;
-      }
-
-      
+      }   
     }
     
     //Update Product
