@@ -331,20 +331,14 @@
 
       const cookieName = getCookie('name') // ('name') is getting from set/create cookie in variable systemAccount.name of login.html file 
       
-      
 
 
       //This's condition when cookie expired (remove cookie data), it is redirect to login page
       
-      // if(cookieName === ""){
-      //   window.location.href="login.html";
-      // }
+      if(cookieName === ""){
+        window.location.href="login.html";
+      }
       displayName.innerText = cookieName;
-      
-
-      
-      
-
     })
     
     //save data to local storage in browser
